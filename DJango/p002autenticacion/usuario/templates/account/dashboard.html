@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block login-container %}
+    <!-- No ocupar-->
+    
+{% endblock %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <p>Bienvenido 
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Cerrar sesion</button>
+        </form>
+    </p>
+    
+{% endblock %}
