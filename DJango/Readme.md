@@ -5,3 +5,6 @@ instalaciones: pip install django
 Version django: 5.2.6
 
 ![alt text](image.png)
+
+user: admin
+pass: admin

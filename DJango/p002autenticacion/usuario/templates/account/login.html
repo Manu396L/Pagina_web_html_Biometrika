@@ -14,13 +14,13 @@
 {% endblock %}
 {% block content %}
 
-    {% if form.errores %}
+    {% if form.errors %}
         <p>El nombre de usuario o la contraseña esta incorrecto.</p>
     {% else %}
         <p>Por favor llena el formulario para iniciar sesion.</p>
     {% endif %}
     
-        <form action="{% url 'login' %}" method="post">
+        <form action="{% url 'usuario:login' %}" method="post">
         {% csrf_token %}
                 <!--usuario-->
                 <div class="input-group">
@@ -34,7 +34,7 @@
                     <input type="password" name="password" id="password" placeholder="Ingrese su contraseña" required>
                 </div>
                 
-                <!-- Oculto-->>
+                <!-- Oculto-->
                 <input type="hidden" name="next" value="{{ next }}">
 
                 <!--opciones para recordar credenciales-->

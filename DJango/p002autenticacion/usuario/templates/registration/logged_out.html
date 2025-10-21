@@ -1,13 +1,35 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% load static %}
+
+{% block title %}Cerrando Sesión...{% endblock %}
 
 {% block login-container %}
-    <!-- No ocupar-->
-    
+ <div class="container-logout">
+        <div class="loading-box">
+            <div class="icono-logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
+            <div class="spinner"></div>
+            <p>Cerrando sesión...</p>
+        </div>
+    </div>
+
+
+<!-- 
+ <p>Puedes iniciar sesion de nuevo desde  <a href="{% url 'login' %}">aqui</a></p>
+ -->
 {% endblock %}
 
-{% block content %}
-    <h1>Haz cerrado sesion</h1>
-    <p>Puedes iniciar sesion de nuevo desde  <a href="{% url 'login' %}">aqui</a></p>
-    
+{% block extra_js %}
+<script>
+    const loginUrl = "{% url 'usuario:login' %}";  // Esta línea es importante
+</script>
+<script src="{% static 'account/js/cerrar_sesion.js' %}"></script>
 {% endblock %}
+
+
+{% block content %}
+    <!-- No Ocupar-->
+{% endblock %}
+
+    

@@ -8,6 +8,10 @@
    <!--Librerias de iconos-->
    <link rel="stylesheet" href="{% static 'account/css/style_acceso.css' %}">
    <script src="{% static 'account/js/login.js' %}" defer></script>
+   
+   <link rel="stylesheet" href="{% static 'account/css/style_dashboard.css' %}">
+   <script src="{% static 'account/js/login.js' %}"></script>
+
 </head>
 <body>
   {% block login-container %} 
@@ -17,5 +21,20 @@
     {% block content%}
     {% endblock %}
   </div>
+    {% block extra_js %}{% endblock %}
+</body>
+
 </body>
 </html>
+
+<!--
+usuario/
+├── templates/
+│   ├── account/
+│   |   ├──dashboard,html
+│   │   └── login.html  
+│   ├── registration/
+│   │   └──logged_out.hml
+│   └── base.html
+└── ...
+-->
