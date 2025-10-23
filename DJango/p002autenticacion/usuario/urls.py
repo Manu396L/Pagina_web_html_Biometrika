@@ -11,6 +11,9 @@ urlpatterns = [
     path('logout/', views.logged_out, name='logout'),
     path('', views.dashboard, name='dashboard'),
     path('ubicaciones/', views.ubicaciones_view, name='ubicaciones'),
+    path('personal/', views.gestion_personal, name='gestion_personal'),
+    path('personal/<int:id>/editar/', views.editar_personal, name='editar_personal'),
+
     
     path('password-change/',auth_views.PasswordChangeView.as_view(), name='password_change'),
     path('password-change/done/',auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),

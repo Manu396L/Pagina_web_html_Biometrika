@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar Empleado{% endblock %}
+
+{% block content %}
+<header>
+    <h1><i class="fa-solid fa-user-pen"></i> Editar Empleado</h1>
+</header>
+
+<a href="{% url 'usuario:gestion_personal' %}" class="btn-volver" title="Volver a la lista">
+  <i class="fa-solid fa-arrow-left"></i> Volver
+</a>
+
+<section class="panel">
+    <h3>Información del Empleado</h3>
+
+    <form method="post" onsubmit="return confirmarGuardado();">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" name="guardar" class="btn btn-success">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
+        </button>
+
+        <button type="submit" name="cancelar" class="btn btn-secondary">
+            <i class="fa-solid fa-ban"></i> Cancelar
+        </button>
+    </form>
+</section>
+
+<script>
+function confirmarGuardado() {
+    return confirm("¿Seguro que deseas guardar los cambios?");
+}
+</script>
+{% endblock %}

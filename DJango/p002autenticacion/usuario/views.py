@@ -1,12 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.contrib.auth  import authenticate, login,logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import UserRegistrationForm, UserEditForm, LoginForm, ProfileEditForm
-from .models import Profile
+from .forms import UserRegistrationForm, UserEditForm, LoginForm, ProfileEditForm, PersonalForm
+from .models import Profile, Personal
 
+"""===================================
+            MANEJO DE SESION
+    =================================="""
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -74,3 +77,67 @@ def logged_out(request):
 @login_required
 def ubicaciones_view(request):
     return render(request, 'account/ubicaciones.html')
+
+"""===================================
+            PERSONAL
+    =================================="""
+
+
+@login_required
+def gestion_personal(request):
+    empleados = Personal.objects.all().order_by('apellido')
+    form = PersonalForm()
+
+    # Crear nuevo empleado
+    if request.method == 'POST':
+        if 'agregar' in request.POST:
+            form = PersonalForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Empleado agregado correctamente.")
+                return redirect('usuario:gestion_personal')
+
+        # Editar empleado existente
+        elif 'editar' in request.POST:
+            empleado_id = request.POST.get('id')
+            empleado = get_object_or_404(Personal, pk=empleado_id)
+            form = PersonalForm(request.POST, instance=empleado)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Empleado actualizado correctamente.")
+                return redirect('usuario:gestion_personal')
+
+        # Eliminar empleado
+        elif 'eliminar' in request.POST:
+            empleado_id = request.POST.get('id')
+            empleado = get_object_or_404(Personal, pk=empleado_id)
+            empleado.delete()
+            messages.success(request, "Empleado eliminado correctamente.")
+            return redirect('usuario:gestion_personal')
+
+    return render(request, 'account/personal.html', {
+        'empleados': empleados,
+        'form': form,
+    })
+
+@login_required
+def editar_personal(request, id):
+    empleado = get_object_or_404(Personal, pk=id)
+    form = PersonalForm(instance=empleado)
+
+    if request.method == 'POST':
+        if 'guardar' in request.POST:
+            form = PersonalForm(request.POST, instance=empleado)
+            if form.is_valid():
+                form.save()
+                messages.success(request, f"Empleado {empleado.apellido}, {empleado.nombre} actualizado correctamente.")
+                return redirect('usuario:gestion_personal')
+
+        elif 'cancelar' in request.POST:
+            messages.info(request, "Edición cancelada.")
+            return redirect('usuario:gestion_personal')
+
+    return render(request, 'account/personal_editar.html', {
+        'form': form,
+        'empleado': empleado
+    })
