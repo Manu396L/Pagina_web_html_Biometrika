@@ -34,7 +34,11 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'account/dashboard.html', {'section':'dashboard'})
+    ultimos_empleados = Personal.objects.order_by('fecha_ingreso')[:10]  # Últimos 10 agregados
+    return render(request, 'account/dashboard.html', {
+        'section': 'dashboard',
+        'ultimos_empleados': ultimos_empleados,
+    })
 
 def register(request):
     if request.method == 'POST':

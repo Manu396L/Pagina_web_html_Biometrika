@@ -4,80 +4,69 @@
 {% block title %}Gestión de Personal{% endblock %}
 
 {% block content %}
-<header>
-  <h1><i class="fa-solid fa-users"></i> Gestión de Personal</h1>
-</header>
+<div class="personal-container">
+  <header class="personal-header">
+    <h1><i class="fa-solid fa-users"></i> Gestión de Personal</h1>
+    <a href="{% url 'usuario:dashboard' %}" class="btn btn-back">
+      <i class="fa-solid fa-arrow-left"></i> Volver
+    </a>
+  </header>
 
-<a href="{% url 'usuario:dashboard' %}" class="btn-volver" title="Volver al inicio">
-  <i class="fa-solid fa-arrow-left"></i> Volver
-</a>
+  <!-- Formulario de alta -->
+  <section class="panel form-panel">
+    <h3><i class="fa-solid fa-user-plus"></i> Agregar nuevo empleado</h3>
+    <form method="post" class="personal-form">
+      {% csrf_token %}
+      <div class="form-grid">
+        {{ form.as_p }}
+      </div>
+      <button type="submit" name="agregar" class="btn btn-success">
+        <i class="fa-solid fa-plus"></i> Agregar
+      </button>
+    </form>
+  </section>
 
-<section class="panel">
-  <h3>Agregar / Editar Empleado</h3>
+  <!-- Lista -->
+  <section class="panel list-panel">
+    <h3><i class="fa-solid fa-list"></i> Lista de empleados</h3>
 
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" name="agregar" class="btn btn-success">
-      <i class="fa-solid fa-plus"></i> Agregar
-    </button>
-  </form>
-</section>
-
-<hr>
-
-<section class="panel">
-  <h3>Lista de Empleados</h3>
-
-  <table border="1" cellpadding="6" cellspacing="0">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>DNI</th>
-        <th>Teléfono</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for empleado in empleados %}
-      <tr>
-        <td>{{ empleado.id }}</td>
-        <td>{{ empleado.nombre }}</td>
-        <td>{{ empleado.apellido }}</td>
-        <td>{{ empleado.dni }}</td>
-        <td>{{ empleado.telefono }}</td>
-        <td>
-          <!-- Botón Editar -->
-          <form method="post" style="display:inline;">
-            {% csrf_token %}
-            <input type="hidden" name="id" value="{{ empleado.id }}">
-            <input type="text" name="nombre" value="{{ empleado.nombre }}">
-            <input type="text" name="apellido" value="{{ empleado.apellido }}">
-            <input type="text" name="dni" value="{{ empleado.dni }}">
-            <input type="text" name="telefono" value="{{ empleado.telefono }}">
-            <button type="submit" name="editar" class="btn btn-primary">
-                <a href="{% url 'usuario:editar_personal' empleado.id %}" class="btn btn-primary">
-                    <i class="fa-solid fa-pen"></i> Editar
-                </a>
-            </button>
-          </form>
-
-          <!-- Botón Eliminar -->
-          <form method="post" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este empleado?');">
-            {% csrf_token %}
-            <input type="hidden" name="id" value="{{ empleado.id }}">
-            <button type="submit" name="eliminar" class="btn btn-danger">
-              <i class="fa-solid fa-trash"></i> Eliminar
-            </button>
-          </form>
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="6">No hay empleados cargados.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</section>
+    <table class="tabla-personal">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Cargo</th>
+          <th>Fecha ingreso</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for empleado in empleados %}
+        <tr>
+          <td>{{ empleado.id }}</td>
+          <td>{{ empleado.nombre }}</td>
+          <td>{{ empleado.apellido }}</td>
+          <td>{{ empleado.cargo }}</td>
+          <td>{{ empleado.fecha_ingreso }}</td>
+          <td class="acciones">
+            <a href="{% url 'usuario:editar_personal' empleado.id %}" class="btn btn-primary">
+              <i class="fa-solid fa-pen"></i>
+            </a>
+            <form method="post" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este empleado?');">
+              {% csrf_token %}
+              <input type="hidden" name="id" value="{{ empleado.id }}">
+              <button type="submit" name="eliminar" class="btn btn-danger">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="sin-datos">No hay empleados cargados.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
 {% endblock %}

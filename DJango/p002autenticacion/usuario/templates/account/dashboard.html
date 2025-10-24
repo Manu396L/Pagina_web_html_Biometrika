@@ -62,110 +62,46 @@
                     <p><b>+</b></p>
                 </div>   
             </section>
+
             <!--Actividad reciente-->
-            <section class="actividad">
-                <div>
-                    <h2><i class="fa-solid fa-clock-rotate-left"></i>Actividad Reciente</h2>
-                    <div class="desplazamiento">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Empleado</th>
-                                    <th>Área</th>
-                                    <th>Fecha/Hora</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>    
-                            <tbody>
-                                <tr>
-                                    <td>Roberto Juarez</td>
-                                    <td>Redes</td>
-                                    <td>10/10/2025, 09:00:05</td>
-                                    <td><span class="estado aprobado">aprobado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Juan rodriguez</td>
-                                    <td>Seguridad Informatica</td>
-                                    <td>10/10/2025, 08:00:05</td>
-                                    <td><span class="estado aprobado">aprobado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Lucia Martinez</td>
-                                    <td>Proyectos</td>
-                                    <td>05/10/2025, 12:00:05</td>
-                                    <td><span class="estado denegado">denegado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Juan Perez</td>
-                                    <td>Recepcion</td>
-                                    <td>10/10/2025, 14:00:05</td>
-                                    <td><span class="estado denegado">denegado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>florencia inesta</td>
-                                    <td>Redes</td>
-                                    <td>02/10/2025, 17:00:05</td>
-                                    <td><span class="estado denegado">denegado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>adriana suarez</td>
-                                    <td>telefonia ip</td>
-                                    <td>02/10/2025, 18:00:05</td>
-                                    <td><span class="estado aprobado">aprobado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Roberto lema</td>
-                                    <td>seguridad</td>
-                                    <td>02/10/2025, 11:00:05</td>
-                                    <td><span class="estado denegado">denegado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Matias suarez</td>
-                                    <td>desarrollo</td>
-                                    <td>02/10/2025, 09:00:05</td>
-                                    <td><span class="estado aprobado">aprobado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Mariano Gomez</td>
-                                    <td>Redes</td>
-                                    <td>02/10/2025, 15:00:05</td>
-                                    <td><span class="estado aprobado">aprobado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Roberto Palacio</td>
-                                    <td>Seguridad</td>
-                                    <td>02/10/2025, 15:00:05</td>
-                                    <td><span class="estado aprobado">aprobado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Juan Faganel</td>
-                                    <td>Soporte Técnico</td>                                                
-                                    <td>02/10/2025, 15:00:05</td>
-                                    <td><span class="estado aprobado">aprobado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Mariano quitana</td>
-                                    <td>Proyectos</td>
-                                    <td>02/10/2025, 12:00:05</td>
-                                    <td><span class="estado denegado">denegado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Ivan Leiva</td>
-                                    <td>Limpieza</td>
-                                    <td>02/10/2025, 08:00:05</td>
-                                    <td><span class="estado aprobado">aprobado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Mariano finaci</td>
-                                    <td>Monitoreo</td>
-                                    <td>02/10/2025, 10:00:05</td>
-                                    <td><span class="estado aprobado">aprobado</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
+<section class="actividad">
+    <div>
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> Actividad Reciente</h2>
+        <div class="desplazamiento">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Empleado</th>
+                        <th>Cargo</th>
+                        <th>Fecha de Ingreso</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>    
+                <tbody>
+                    {% for empleado in ultimos_empleados %}
+                    <tr>
+                        <td>{{ empleado.apellido }}, {{ empleado.nombre }}</td>
+                        <td>{{ empleado.cargo|default:"—" }}</td>
+                        <td>{{ empleado.fecha_ingreso|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if empleado.activo %}
+                                <span class="estado aprobado">Activo</span>
+                            {% else %}
+                                <span class="estado denegado">Inactivo</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No hay empleados registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
 
 
             <!--Alerta de sistemas-->

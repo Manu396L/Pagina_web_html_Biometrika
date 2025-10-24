@@ -33,4 +33,8 @@ class ProfileEditForm(forms.ModelForm):
 class PersonalForm(forms.ModelForm):
     class Meta:
         model = Personal
-        fields = ['nombre', 'apellido', 'dni', 'telefono']
+        fields = ['nombre', 'apellido', 'dni', 'telefono', 'email', 'cargo', 'fecha_ingreso', 'activo']
+        widgets = {
+            'fecha_ingreso': forms.DateInput(attrs={'type': 'date'}),
+        }
+        
