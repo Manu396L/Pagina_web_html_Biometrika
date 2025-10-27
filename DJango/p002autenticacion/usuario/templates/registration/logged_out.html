@@ -4,32 +4,24 @@
 {% block title %}Cerrando Sesión...{% endblock %}
 
 {% block login-container %}
- <div class="container-logout">
-        <div class="loading-box">
-            <div class="icono-logout">
-                <i class="fa-solid fa-right-from-bracket"></i>
-            </div>
-            <div class="spinner"></div>
-            <p>Cerrando sesión...</p>
+<div class="container-logout">
+    <div class="loading-box">
+        <div class="icono-logout">
+            <i class="fa-solid fa-right-from-bracket fa-3x"></i>
         </div>
+        <div class="spinner"></div>
+        <p>Cerrando sesión...</p>
+        <p class="mensaje-secundario">
+            Serás redirigido en unos segundos o puedes iniciar sesión 
+            <a href="{% url 'usuario:login' %}">aquí</a>.
+        </p>
     </div>
-
-
-<!-- 
- <p>Puedes iniciar sesion de nuevo desde  <a href="{% url 'login' %}">aqui</a></p>
- -->
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    const loginUrl = "{% url 'usuario:login' %}";  // Esta línea es importante
+    const loginUrl = "{% url 'usuario:login' %}";
 </script>
 <script src="{% static 'account/js/cerrar_sesion.js' %}"></script>
 {% endblock %}
-
-
-{% block content %}
-    <!-- No Ocupar-->
-{% endblock %}
-
-    

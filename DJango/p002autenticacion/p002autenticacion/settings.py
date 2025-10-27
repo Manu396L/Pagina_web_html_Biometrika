@@ -129,6 +129,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"  # Esta es la carpeta donde 'collectstati
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL= "dashboard"
+LOGIN_REDIRECT_URL= "usuario:dashboard"
 LOGIN_URL = "usuario:login"
-LOGOUT_URL = "logout"
+LOGOUT_URL = "usuario:logout"
