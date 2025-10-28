@@ -1,262 +1,412 @@
-// Array para almacenar las ubicaciones registradas
+// Datos de ejemplo
 let ubicaciones = [];
 
-// Esperar a que el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('formularioUbicacion');
-    const mensajeExito = document.getElementById('mensaje-exito');
-    const cuerpoTabla = document.getElementById('cuerpoTabla');
+// Elementos DOM
+const cuerpoTabla = document.getElementById('cuerpoTabla');
+const estadoVacio = document.getElementById('estado-vacio');
+const tablaUbicaciones = document.getElementById('tablaUbicaciones');
+const btnAgregar = document.querySelector('.btn');
+const btnAgregarPrimero = document.getElementById('btn-agregar-primero');
+const btnLimpiarFiltros = document.getElementById('btn-limpiar-filtros');
 
-    // Cargar ubicaciones guardadas en localStorage (si existen)
-    cargarUbicaciones();
+// Elementos de filtro
+const filtroNombre = document.getElementById('filtro-nombre');
+const filtroTipo = document.getElementById('filtro-tipo');
+const filtroDispositivo = document.getElementById('filtro-dispositivo');
+const seccionFiltros = document.getElementById('filtros');
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Obtener los datos del formulario
-        const permisos = Array.from(document.getElementById('permisos').selectedOptions)
-            .map(option => option.value);
+// Elementos del formulario
+const inputCodigo = document.getElementById('codigo_unico');
+const inputNombre = document.getElementById('nombre_sede');
+const selectTipo = document.getElementById('tipo_ubicacion');
+const selectDispositivo = document.getElementById('dispositivo_biometrico');
+const selectSeguridad = document.getElementById('nivel_seguridad');
 
-        const datos = {
-            id: Date.now(), // ID único basado en timestamp
-            tipo_ubicacion: document.getElementById('tipo_ubicacion').value,
-            nombre_sede: document.getElementById('nombre_sede').value,
-            codigo_unico: document.getElementById('codigo_unico').value,
-            direccion: document.getElementById('direccion').value,
-            descripcion: document.getElementById('descripcion').value,
-            dispositivo_biometrico: document.getElementById('dispositivo_biometrico').value,
-            nivel_seguridad: document.getElementById('nivel_seguridad').value,
-            permisos: permisos
-        };
-        
-        // Agregar a la lista de ubicaciones
-        ubicaciones.push(datos);
-        
-        // Guardar en localStorage
-        guardarUbicaciones();
-        
-        // Mostrar en consola los datos (para pruebas)
-        console.log('Datos del formulario:', datos);
-        console.log('Ubicaciones totales:', ubicaciones);
-        
-        // Actualizar la tabla
-        renderizarTabla();
-        
-        // Mostrar mensaje de éxito
-        mensajeExito.classList.add('mostrar');
-        
-        // Hacer scroll hacia el mensaje de éxito
-        mensajeExito.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        // Limpiar formulario
-        form.reset();
-        
-        // Ocultar mensaje después de 5 segundos
-        setTimeout(() => {
-            mensajeExito.classList.remove('mostrar');
-        }, 5000);
-    });
+// Elementos del dropdown
+const dropdownMenuButton = document.getElementById('dropdownMenuButton');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const opcionFiltros = document.getElementById('opcion-filtros');
+const opcionModificarTodo = document.getElementById('opcion-modificar-todo');
+const opcionEliminarTodo = document.getElementById('opcion-eliminar-todo');
 
-    // Mejorar la experiencia del select múltiple
-    const selectPermisos = document.getElementById('permisos');
+// Variable para controlar si estamos editando
+let editandoIndex = null;
+
+// Función para actualizar la tabla
+function actualizarTabla() {
+    // Aplicar filtros
+    let ubicacionesFiltradas = ubicaciones;
     
-    selectPermisos.addEventListener('mousedown', function(e) {
-        e.preventDefault();
+    if (filtroNombre.value) {
+        ubicacionesFiltradas = ubicacionesFiltradas.filter(u => 
+            u.nombre.toLowerCase().includes(filtroNombre.value.toLowerCase())
+        );
+    }
+    
+    if (filtroTipo.value) {
+        ubicacionesFiltradas = ubicacionesFiltradas.filter(u => u.tipo === filtroTipo.value);
+    }
+    
+    if (filtroDispositivo.value) {
+        ubicacionesFiltradas = ubicacionesFiltradas.filter(u => u.dispositivo === filtroDispositivo.value);
+    }
+    
+    // Limpiar tabla
+    cuerpoTabla.innerHTML = '';
+    
+    // Mostrar estado vacío o tabla
+    if (ubicacionesFiltradas.length === 0) {
+        estadoVacio.style.display = 'block';
+        tablaUbicaciones.style.display = 'none';
+    } else {
+        estadoVacio.style.display = 'none';
+        tablaUbicaciones.style.display = 'table';
         
-        const option = e.target;
-        if (option.tagName === 'OPTION') {
-            option.selected = !option.selected;
-        }
-        
-        return false;
-    });
-
-    selectPermisos.addEventListener('click', function(e) {
-        e.preventDefault();
-    });
-
-    // Función para renderizar la tabla
-    function renderizarTabla() {
-        if (ubicaciones.length === 0) {
-            cuerpoTabla.innerHTML = `
-                <tr class="empty-state">
-                    <td colspan="6">
-                        <i class="fa-solid fa-inbox"></i>
-                        <p>No hay ubicaciones registradas aún</p>
-                    </td>
-                </tr>
-            `;
-            return;
-        }
-
-        cuerpoTabla.innerHTML = ubicaciones.map(ubicacion => `
-            <tr>
-                <td><strong>${ubicacion.codigo_unico}</strong></td>
-                <td>${ubicacion.nombre_sede}</td>
-                <td><span class="badge-tipo badge-${ubicacion.tipo_ubicacion}">${formatearTipo(ubicacion.tipo_ubicacion)}</span></td>
-                <td>${formatearDispositivo(ubicacion.dispositivo_biometrico)}</td>
-                <td><span class="badge-seguridad badge-${ubicacion.nivel_seguridad}">${formatearSeguridad(ubicacion.nivel_seguridad)}</span></td>
-                <td>
-                    <div class="acciones">
-                        <button class="btn-accion btn-ver" onclick="verUbicacion(${ubicacion.id})" title="Ver detalles">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <button class="btn-accion btn-editar" onclick="editarUbicacion(${ubicacion.id})" title="Editar">
-                            <i class="fa-solid fa-edit"></i>
-                        </button>
-                        <button class="btn-accion btn-eliminar" onclick="eliminarUbicacion(${ubicacion.id})" title="Eliminar">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
+        // Llenar tabla con ubicaciones
+        ubicacionesFiltradas.forEach((ubicacion, index) => {
+            const fila = document.createElement('tr');
+            
+            // Formatear valores para mostrar
+            const tipoTexto = {
+                'sede': 'Sede',
+                'oficina': 'Oficina',
+                'area': 'Área'
+            }[ubicacion.tipo] || ubicacion.tipo;
+            
+            const dispositivoTexto = {
+                'huella': 'Lector de Huella',
+                'Tarjeta': 'Tarjeta de Acceso',
+                'PIN': 'PIN'
+            }[ubicacion.dispositivo] || ubicacion.dispositivo;
+            
+            const seguridadTexto = {
+                'bajo': 'Bajo',
+                'medio': 'Medio',
+                'alto': 'Alto'
+            }[ubicacion.seguridad] || ubicacion.seguridad;
+            
+            // Determinar clases para badges
+            const tipoBadgeClass = {
+                'sede': 'badge-sede',
+                'oficina': 'badge-oficina',
+                'area': 'badge-area'
+            }[ubicacion.tipo] || '';
+            
+            const seguridadBadgeClass = {
+                'bajo': 'badge-bajo',
+                'medio': 'badge-medio',
+                'alto': 'badge-alto'
+            }[ubicacion.seguridad] || '';
+            
+            fila.innerHTML = `
+                <td>${ubicacion.codigo}</td>
+                <td>${ubicacion.nombre}</td>
+                <td><span class="badge-tipo ${tipoBadgeClass}">${tipoTexto}</span></td>
+                <td>${dispositivoTexto}</td>
+                <td><span class="badge-seguridad ${seguridadBadgeClass}">${seguridadTexto}</span></td>
+                <td class="acciones">
+                    <button class="btn-accion btn-editar" data-index="${index}">
+                        <i class="fa-solid fa-pen"></i> Editar
+                    </button>
+                    <button class="btn-accion btn-eliminar" data-index="${index}">
+                        <i class="fa-solid fa-trash"></i> Eliminar
+                    </button>
                 </td>
-            </tr>
-        `).join('');
-    }
-
-    // Funciones auxiliares para formatear datos
-    function formatearTipo(tipo) {
-        const tipos = {
-            'sede': 'Sede',
-            'oficina': 'Oficina',
-            'area': 'Área'
-        };
-        return tipos[tipo] || tipo;
-    }
-
-    function formatearDispositivo(dispositivo) {
-        const dispositivos = {
-            'huella': 'Huella Dactilar',
-            'Tarjeta': 'Tarjeta',
-            'PIN': 'PIN'
-        };
-        return dispositivos[dispositivo] || dispositivo;
-    }
-
-    function formatearSeguridad(nivel) {
-        return nivel.charAt(0).toUpperCase() + nivel.slice(1);
-    }
-
-    // Guardar ubicaciones en localStorage
-    function guardarUbicaciones() {
-        localStorage.setItem('ubicaciones', JSON.stringify(ubicaciones));
-    }
-
-    // Cargar ubicaciones desde localStorage
-    function cargarUbicaciones() {
-        const ubicacionesGuardadas = localStorage.getItem('ubicaciones');
-        if (ubicacionesGuardadas) {
-            ubicaciones = JSON.parse(ubicacionesGuardadas);
-            renderizarTabla();
-        }
-    }
-});
-
-// Funciones globales para los botones de acción
-function verUbicacion(id) {
-    const ubicacion = ubicaciones.find(u => u.id === id);
-    if (ubicacion) {
-        let mensaje = `
-
-    DETALLES DE LA UBICACIÓN           
-
-    Código: ${ubicacion.codigo_unico}
-    Nombre: ${ubicacion.nombre_sede}
-    Tipo: ${ubicacion.tipo_ubicacion}
-    Dirección: ${ubicacion.direccion || 'No especificada'}
-    Descripción: ${ubicacion.descripcion || 'Sin descripción'}
-
-    SEGURIDAD
-• Dispositivo: ${ubicacion.dispositivo_biometrico}
-• Nivel: ${ubicacion.nivel_seguridad}
-• Permisos: ${ubicacion.permisos.join(', ') || 'Ninguno'}
-        `;
-        alert(mensaje);
-        console.log('Ubicación completa:', ubicacion);
-    }
-}
-
-function editarUbicacion(id) {
-    const ubicacion = ubicaciones.find(u => u.id === id);
-    if (ubicacion) {
-        // Rellenar el formulario con los datos de la ubicación
-        document.getElementById('tipo_ubicacion').value = ubicacion.tipo_ubicacion;
-        document.getElementById('nombre_sede').value = ubicacion.nombre_sede;
-        document.getElementById('codigo_unico').value = ubicacion.codigo_unico;
-        document.getElementById('direccion').value = ubicacion.direccion;
-        document.getElementById('descripcion').value = ubicacion.descripcion;
-        document.getElementById('dispositivo_biometrico').value = ubicacion.dispositivo_biometrico;
-        document.getElementById('nivel_seguridad').value = ubicacion.nivel_seguridad;
-        
-        // Seleccionar permisos
-        const selectPermisos = document.getElementById('permisos');
-        Array.from(selectPermisos.options).forEach(option => {
-            option.selected = ubicacion.permisos.includes(option.value);
+            `;
+            
+            cuerpoTabla.appendChild(fila);
         });
-
-        // Eliminar la ubicación antigua (se agregará como nueva al guardar)
-        eliminarUbicacion(id, false);
-
-        // Hacer scroll al formulario
-        window.scrollTo({ top: 0, behavior: 'smooth' });
         
-        alert('📝 Datos cargados en el formulario. Modifícalos y presiona "Guardar Cambios".');
+        // Agregar event listeners a los botones de editar y eliminar
+        document.querySelectorAll('.btn-editar').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const index = parseInt(btn.getAttribute('data-index'));
+                editarUbicacion(index);
+            });
+        });
+        
+        document.querySelectorAll('.btn-eliminar').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const index = parseInt(btn.getAttribute('data-index'));
+                eliminarUbicacion(index);
+            });
+        });
     }
 }
 
-function eliminarUbicacion(id, confirmar = true) {
-    if (confirmar && !confirm('¿Estás seguro de que deseas eliminar esta ubicación?')) {
+// Función para agregar ubicación
+function agregarUbicacion(e) {
+    if (e) e.preventDefault();
+    
+    const codigo = inputCodigo.value.trim();
+    const nombre = inputNombre.value.trim();
+    const tipo = selectTipo.value;
+    const dispositivo = selectDispositivo.value;
+    const seguridad = selectSeguridad.value;
+    
+    if (!codigo || !nombre || !tipo) {
+        alert('Por favor, complete los campos obligatorios (Código, Nombre y Tipo)');
         return;
     }
     
-    ubicaciones = ubicaciones.filter(u => u.id !== id);
-    localStorage.setItem('ubicaciones', JSON.stringify(ubicaciones));
+    const nuevaUbicacion = {
+        codigo,
+        nombre,
+        tipo,
+        dispositivo,
+        seguridad
+    };
     
-    // Re-renderizar la tabla
-    const cuerpoTabla = document.getElementById('cuerpoTabla');
-    if (ubicaciones.length === 0) {
-        cuerpoTabla.innerHTML = `
-            <tr class="empty-state">
-                <td colspan="6">
-                    <i class="fa-solid fa-inbox"></i>
-                    <p>No hay ubicaciones registradas aún</p>
-                </td>
-            </tr>
-        `;
+    if (editandoIndex !== null) {
+        // Actualizar ubicación existente
+        ubicaciones[editandoIndex] = nuevaUbicacion;
+        editandoIndex = null;
+        btnAgregar.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar Cambios';
+        mostrarMensaje('Ubicación actualizada correctamente');
     } else {
-        cuerpoTabla.innerHTML = ubicaciones.map(ubicacion => `
-            <tr>
-                <td><strong>${ubicacion.codigo_unico}</strong></td>
-                <td>${ubicacion.nombre_sede}</td>
-                <td><span class="badge-tipo badge-${ubicacion.tipo_ubicacion}">${formatearTexto(ubicacion.tipo_ubicacion)}</span></td>
-                <td>${formatearDispositivo(ubicacion.dispositivo_biometrico)}</td>
-                <td><span class="badge-seguridad badge-${ubicacion.nivel_seguridad}">${formatearTexto(ubicacion.nivel_seguridad)}</span></td>
-                <td>
-                    <div class="acciones">
-                        <button class="btn-accion btn-ver" onclick="verUbicacion(${ubicacion.id})" title="Ver detalles">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <button class="btn-accion btn-editar" onclick="editarUbicacion(${ubicacion.id})" title="Editar">
-                            <i class="fa-solid fa-edit"></i>
-                        </button>
-                        <button class="btn-accion btn-eliminar" onclick="eliminarUbicacion(${ubicacion.id})" title="Eliminar">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        `).join('');
+        // Agregar nueva ubicación
+        ubicaciones.push(nuevaUbicacion);
+        mostrarMensaje('Ubicación registrada correctamente');
+    }
+    
+    // Limpiar formulario
+    limpiarFormulario();
+    
+    // Actualizar tabla
+    actualizarTabla();
+}
+
+// Función para mostrar mensaje de éxito
+function mostrarMensaje(mensaje) {
+    const mensajeExito = document.getElementById('mensaje-exito');
+    mensajeExito.innerHTML = `<i class="fa-solid fa-check"></i> ${mensaje}`;
+    mensajeExito.classList.add('mostrar');
+    
+    setTimeout(() => {
+        mensajeExito.classList.remove('mostrar');
+    }, 3000);
+}
+
+// Función para limpiar formulario
+function limpiarFormulario() {
+    inputCodigo.value = '';
+    inputNombre.value = '';
+    selectTipo.value = '';
+    selectDispositivo.value = '';
+    selectSeguridad.value = '';
+}
+
+// Función para editar ubicación - CORREGIDA
+function editarUbicacion(index) {
+    console.log('Editando ubicación:', index); // Para debug
+    
+    // Encontrar la ubicación original (sin filtros aplicados)
+    const ubicacionOriginal = ubicaciones[index];
+    
+    if (!ubicacionOriginal) {
+        console.error('Ubicación no encontrada en el índice:', index);
+        return;
+    }
+    
+    console.log('Datos de la ubicación:', ubicacionOriginal);
+    
+    // Llenar formulario con datos existentes
+    inputCodigo.value = ubicacionOriginal.codigo;
+    inputNombre.value = ubicacionOriginal.nombre;
+    selectTipo.value = ubicacionOriginal.tipo;
+    selectDispositivo.value = ubicacionOriginal.dispositivo || '';
+    selectSeguridad.value = ubicacionOriginal.seguridad || '';
+    
+    // Cambiar el botón a "Actualizar"
+    editandoIndex = index;
+    btnAgregar.innerHTML = '<i class="fa-solid fa-sync"></i> Actualizar Ubicación';
+    
+    // Cambiar el texto del botón "Agregar Primera Ubicación" si existe
+    if (btnAgregarPrimero) {
+        btnAgregarPrimero.innerHTML = '<i class="fa-solid fa-sync"></i> Actualizar Ubicación';
+    }
+    
+    // Hacer scroll al formulario
+    document.querySelector('.add-panel').scrollIntoView({ behavior: 'smooth' });
+    
+    // Mostrar mensaje informativo
+    mostrarMensaje(`Editando ubicación: ${ubicacionOriginal.nombre}`);
+}
+
+// Función para eliminar ubicación
+function eliminarUbicacion(index) {
+    if (confirm('¿Está seguro de que desea eliminar esta ubicación?')) {
+        ubicaciones.splice(index, 1);
+        actualizarTabla();
+        mostrarMensaje('Ubicación eliminada correctamente');
+        
+        // Si estábamos editando y eliminamos la misma ubicación, limpiar formulario
+        if (editandoIndex === index) {
+            editandoIndex = null;
+            btnAgregar.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar Cambios';
+            if (btnAgregarPrimero) {
+                btnAgregarPrimero.innerHTML = '<i class="fa-solid fa-plus"></i> Agregar Primera Ubicación';
+            }
+            limpiarFormulario();
+        }
     }
 }
 
-function formatearTexto(texto) {
-    return texto.charAt(0).toUpperCase() + texto.slice(1);
+// Función para limpiar filtros
+function limpiarFiltros() {
+    filtroNombre.value = '';
+    filtroTipo.value = '';
+    filtroDispositivo.value = '';
+    actualizarTabla();
 }
 
-function formatearDispositivo(dispositivo) {
-    const dispositivos = {
-        'huella': 'Huella Dactilar',
-        'Tarjeta': 'Tarjeta',
-        'PIN': 'PIN'
-    };
-    return dispositivos[dispositivo] || dispositivo;
+// Función para mostrar/ocultar filtros
+function toggleFiltros() {
+    if (seccionFiltros.style.display === 'none' || seccionFiltros.style.display === '') {
+        seccionFiltros.style.display = 'flex';
+    } else {
+        seccionFiltros.style.display = 'none';
+    }
 }
+
+// Función para modificar todas las ubicaciones
+function modificarTodo() {
+    if (ubicaciones.length === 0) {
+        alert('No hay ubicaciones para modificar');
+        return;
+    }
+    
+    // Aquí podrías implementar una lógica para modificar todas las ubicaciones
+    // Por ejemplo, abrir un modal con opciones de modificación masiva
+    const nuevoDispositivo = prompt('Ingrese el nuevo tipo de dispositivo para todas las ubicaciones:');
+    if (nuevoDispositivo) {
+        ubicaciones.forEach(ubicacion => {
+            ubicacion.dispositivo = nuevoDispositivo;
+        });
+        actualizarTabla();
+        mostrarMensaje('Todas las ubicaciones han sido actualizadas');
+    }
+}
+
+// Función para eliminar todas las ubicaciones
+function eliminarTodo() {
+    if (ubicaciones.length === 0) {
+        alert('No hay ubicaciones para eliminar');
+        return;
+    }
+    
+    if (confirm('¿Está seguro de que desea eliminar TODAS las ubicaciones? Esta acción no se puede deshacer.')) {
+        ubicaciones = [];
+        actualizarTabla();
+        mostrarMensaje('Todas las ubicaciones han sido eliminadas');
+        
+        // Limpiar formulario si estaba editando
+        if (editandoIndex !== null) {
+            editandoIndex = null;
+            btnAgregar.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar Cambios';
+            if (btnAgregarPrimero) {
+                btnAgregarPrimero.innerHTML = '<i class="fa-solid fa-plus"></i> Agregar Primera Ubicación';
+            }
+            limpiarFormulario();
+        }
+    }
+}
+
+// Función para manejar el dropdown del menú de opciones
+function toggleDropdown(e) {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+}
+
+// Cerrar dropdown al hacer clic fuera
+function cerrarDropdown(e) {
+    if (!dropdownMenu.contains(e.target) && !dropdownMenuButton.contains(e.target)) {
+        dropdownMenu.classList.remove('show');
+    }
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Formulario
+    const formulario = document.getElementById('formularioUbicacion');
+    formulario.addEventListener('submit', agregarUbicacion);
+    
+    // Botón "Agregar Primera Ubicación"
+    btnAgregarPrimero.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (editandoIndex !== null) {
+            // Si está editando, actualizar
+            agregarUbicacion(e);
+        } else {
+            // Si no está editando, agregar nueva
+            agregarUbicacion(e);
+        }
+    });
+    
+    // Filtros
+    btnLimpiarFiltros.addEventListener('click', limpiarFiltros);
+    filtroNombre.addEventListener('input', actualizarTabla);
+    filtroTipo.addEventListener('change', actualizarTabla);
+    filtroDispositivo.addEventListener('change', actualizarTabla);
+    
+    // Dropdown functionality
+    dropdownMenuButton.addEventListener('click', toggleDropdown);
+    
+    // Opciones del dropdown
+    opcionFiltros.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleFiltros();
+        dropdownMenu.classList.remove('show');
+    });
+    
+    opcionModificarTodo.addEventListener('click', function(e) {
+        e.stopPropagation();
+        modificarTodo();
+        dropdownMenu.classList.remove('show');
+    });
+    
+    opcionEliminarTodo.addEventListener('click', function(e) {
+        e.stopPropagation();
+        eliminarTodo();
+        dropdownMenu.classList.remove('show');
+    });
+    
+    // Cerrar dropdown al hacer clic fuera
+    document.addEventListener('click', cerrarDropdown);
+    
+    // Prevenir que el dropdown se cierre cuando se hace clic dentro de él
+    dropdownMenu.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
+    // Inicializar tabla
+    actualizarTabla();
+    
+    // Agregar algunas ubicaciones de ejemplo
+    ubicaciones = [
+        {
+            codigo: 'WAN-001',
+            nombre: 'Sede Central',
+            tipo: 'sede',
+            dispositivo: 'huella',
+            seguridad: 'alto'
+        },
+        {
+            codigo: 'WAN-002',
+            nombre: 'Oficina Administrativa',
+            tipo: 'oficina',
+            dispositivo: 'Tarjeta',
+            seguridad: 'medio'
+        },
+        {
+            codigo: 'WAN-003',
+            nombre: 'Sala de Servidores',
+            tipo: 'area',
+            dispositivo: 'PIN',
+            seguridad: 'alto'
+        }
+    ];
+    actualizarTabla();
+});

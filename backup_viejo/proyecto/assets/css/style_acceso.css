@@ -9,10 +9,12 @@
 /* Fondo general */
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background: #f4f6f9; /* mismo fondo que dashboard */
+    padding: 20px;
 }
 
 /* Contenedor del login */
@@ -25,6 +27,7 @@ body {
     max-width: 400px;
     text-align: center;
     border-top: 6px solid #1abc9c; /* acento verde */
+    margin-bottom: 20px;
 }
 
 /* Logo */
@@ -32,7 +35,7 @@ body {
     margin-bottom: 25px;
 }
 
-.logo i {
+.fingerprint-scanner i {
     font-size: 48px;
     color: #1abc9c; /* fingerprint en verde */
     margin-bottom: 10px;
@@ -80,6 +83,12 @@ body {
     align-items: center;
     margin-bottom: 18px;
     font-size: 13px;
+}
+
+.options .remember {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .options .remember label {
@@ -141,4 +150,73 @@ body {
 
 .register a:hover {
     color: #16a085;
+}
+
+/* Información de soporte */
+.soporte-info {
+    text-align: center;
+    margin-top: 30px;
+    color: #7f8c8d;
+    font-size: 14px;
+    line-height: 1.8;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.soporte-info i {
+    color: #1abc9c;
+    margin-right: 5px;
+}
+
+.soporte-info a {
+    color: #2c3e50;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.soporte-info a:hover {
+    color: #1abc9c;
+}
+
+/* Footer */
+.footer {
+    background: #2c3e50;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #ecf0f1;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+    margin-top: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .login-container {
+        padding: 30px 20px;
+    }
+    
+    .logo h1 {
+        font-size: 20px;
+    }
+    
+    .fingerprint-scanner i {
+        font-size: 40px;
+    }
+    
+    .footer {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
 }

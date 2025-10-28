@@ -250,3 +250,147 @@ textarea::placeholder {
         padding: 12px 25px;
     }
 }
+/*menu desplegable*/
+/* Mover el trigger a la esquina inferior izquierda */
+.menu {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    display: block;
+    z-index: 1000;
+}
+/* Botón circular para el icono */
+.menu i {
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: #2c3e50;
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+/* asegurar que el enlace que envuelve el icono no rompa el layout */
+.menu h3 a {
+    display: inline-block;
+    line-height: 0;
+    text-decoration: none;
+}
+
+/* Quitar subrayado en el menú (trigger y opciones) */
+.menu h3 a,
+.menu div ul li a {
+    text-decoration: none;
+}
+
+/* Panel desplegable se posiciona justo encima del botón (sin gap) */
+.menu div {
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: 48px; /* <- cambiado: elimina el gap que provocaba que el menú se cerrara al mover el mouse */
+    background: #2c3e50;
+    min-width: 220px;
+    border-radius: 8px;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.18);
+    z-index: 1010;
+    pointer-events: auto; /* asegurar que el panel reciba eventos del ratón */
+}
+
+/* Mostrar menú cuando el puntero está sobre .menu o cuando tiene foco interno (teclado/tab) */
+.menu:hover div,
+.menu:focus-within div {
+    display: block;
+}
+
+/* Mantener interacción por :hover si está*/
+.menu:hover div {
+    display: block;
+}
+
+/* Forzar texto blanco en el menú desplegable */
+.menu div ul,
+.menu div ul li,
+.menu div ul li a {
+  color: #ffffff; /* texto en blanco */
+}
+
+/* Iconos dentro de las opciones también en blanco */
+.menu div ul li a i {
+    color: #ffffff;
+}
+
+/* Mantener buen contraste en hover */
+.menu div ul li a:hover {
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+}
+
+/* Opcional: línea separadora más sutil sobre fondo oscuro */
+.menu div ul li a {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Pequeña mejora visual al pasar por el botón */
+.menu:hover i {
+    transform: translateY(-2px);
+    background: #34495e;
+}
+
+/* Cambios: usar #1db598 cuando el mouse esté cerca (hover) o haya foco */
+.menu:hover i,
+.menu:focus-within i {
+    background: #2c3e50; /* color solicitado */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(29,181,152,0.18);
+}
+
+/* Resaltar el panel del menú con un borde sutil del mismo color */
+.menu div {
+    /* ...existing properties... */
+    border: 2px solid transparent; /* asegurar que haya borde para animar */
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.menu:hover div,
+.menu:focus-within div {
+    border-color: rgba(29,181,152,0.18); /* borde sutil verde cuando el mouse está cerca */
+    box-shadow: 0 10px 30px rgba(29,181,152,0.06);
+}
+
+/* Hover en las opciones del menú con tono verde translúcido */
+.menu div ul li a:hover {
+    background: rgba(29,181,152,0.10);
+    color: #ffffff;
+}
+
+/* Eliminar el punto blanco (marcador) en las opciones del menú */
+.menu div ul {
+    list-style: none;    /* quita el marcador */
+    margin: 0;
+    padding: 0;
+}
+
+.menu div ul li {
+    list-style: none;    /* refuerzo para compatibilidad */
+}
+
+/* Ocultar explícitamente el marcador en navegadores que usan ::marker */
+.menu div ul li::marker {
+    content: '';
+    display: none;
+}
+
+/* Asegurar que los enlaces ocupen todo el ancho y no muestren subrayado */
+.menu div ul li a {
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    color: #ffffff; /* ya definido pero reforzado */
+}

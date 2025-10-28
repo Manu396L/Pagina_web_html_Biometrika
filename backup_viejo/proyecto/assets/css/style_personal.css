@@ -45,7 +45,7 @@ body {
 header {
     text-align: center;
     margin-bottom: 40px;
-    max-width: 1200px;
+    max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -74,14 +74,14 @@ header p {
 
 /* Main container */
 .main-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     gap: 30px;
 }
 
-/* Panel para agregar ubicaciones */
-.add-panel {
+/* Panel para formulario */
+.form-panel {
     flex: 1;
     background: #fff;
     border-radius: 12px;
@@ -89,15 +89,15 @@ header p {
     padding: 30px;
     border: 2px solid transparent;
     transition: all 0.3s ease;
-    max-width: 400px;
+    max-width: 500px;
 }
 
-.add-panel:hover {
+.form-panel:hover {
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
     border-color: #1abc9c;
 }
 
-/* Panel para listar ubicaciones */
+/* Panel para listar empleados */
 .list-panel {
     flex: 2;
     background: #fff;
@@ -157,6 +157,16 @@ form {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+/* Form rows para disposición en línea */
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
 }
 
 /* Fieldsets */
@@ -220,6 +230,7 @@ label i {
 
 /* Inputs, textarea y select */
 input[type="text"],
+input[type="email"],
 textarea,
 select {
     width: 100%;
@@ -234,24 +245,19 @@ select {
 }
 
 input[type="text"]:hover,
+input[type="email"]:hover,
 textarea:hover,
 select:hover {
     border-color: #34495e;
 }
 
 input[type="text"]:focus,
+input[type="email"]:focus,
 textarea:focus,
 select:focus {
     outline: none;
     border-color: #1abc9c;
     box-shadow: 0 2px 8px rgba(26, 188, 156, 0.2);
-}
-
-/* Textarea específico */
-textarea {
-    resize: vertical;
-    min-height: 80px;
-    line-height: 1.5;
 }
 
 /* Select personalizado */
@@ -279,29 +285,27 @@ textarea::placeholder {
     color: #95a5a6;
 }
 
-/* Botón de envío */
+/* Botones */
 .btn {
     background: #1abc9c;
     color: #fff;
-    padding: 16px 35px;
+    padding: 12px 25px;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    width: 100%;
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 8px;
 }
 
 .btn i {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .btn:hover {
@@ -312,6 +316,30 @@ textarea::placeholder {
 
 .btn:active {
     transform: translateY(0);
+}
+
+.btn-success {
+    background: #1abc9c;
+}
+
+.btn-success:hover {
+    background: #16a085;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+.btn-info {
+    background: #3498db;
+}
+
+.btn-info:hover {
+    background: #2980b9;
 }
 
 /* Botón de acción */
@@ -345,6 +373,136 @@ textarea::placeholder {
 .btn-eliminar:hover {
     background: #c0392b;
     transform: translateY(-2px);
+}
+
+/* Acciones del formulario */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form-actions .btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Sección de foto */
+.foto-group {
+    text-align: center;
+}
+
+.foto-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.foto-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    color: #7f8c8d;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.foto-preview i {
+    font-size: 40px;
+    margin-bottom: 5px;
+}
+
+.foto-preview span {
+    font-size: 12px;
+}
+
+.foto-preview.has-image {
+    border-color: #1abc9c;
+}
+
+.foto-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.foto-input {
+    display: none;
+}
+
+.btn-foto {
+    background: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-foto:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Sección de credenciales */
+.credencial-options {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.input-credencial {
+    flex: 1;
+    min-width: 150px;
+}
+
+.btn-credencial {
+    background: #9b59b6;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.btn-credencial:hover {
+    background: #8e44ad;
+    transform: translateY(-2px);
+}
+
+.huella-status {
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.huella-status.registrada {
+    background: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
 }
 
 /* Filtros */
@@ -398,6 +556,7 @@ td {
     padding: 14px 12px;
     color: #2c3e50;
     font-size: 14px;
+    vertical-align: middle;
 }
 
 /* Estado vacío */
@@ -418,8 +577,8 @@ td {
     margin-bottom: 15px;
 }
 
-/* Badges de tipo */
-.badge-tipo {
+/* Badges de área */
+.badge-area {
     display: inline-block;
     padding: 4px 10px;
     border-radius: 12px;
@@ -428,7 +587,47 @@ td {
     text-transform: uppercase;
 }
 
+.badge-ti {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.badge-rh {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.badge-finanzas {
+    background: #e8f5e8;
+    color: #2e7d32;
+}
+
+.badge-operaciones {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.badge-marketing {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.badge-ventas {
+    background: #e0f2f1;
+    color: #00695c;
+}
+
+/* Badges de sede */
 .badge-sede {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-sede-principal {
     background: #e3f2fd;
     color: #1976d2;
 }
@@ -438,13 +637,13 @@ td {
     color: #7b1fa2;
 }
 
-.badge-area {
+.badge-area-especifica {
     background: #fff3e0;
     color: #f57c00;
 }
 
-/* Badges de seguridad */
-.badge-seguridad {
+/* Badges de dispositivo */
+.badge-dispositivo {
     display: inline-block;
     padding: 4px 10px;
     border-radius: 12px;
@@ -453,25 +652,46 @@ td {
     text-transform: uppercase;
 }
 
-.badge-bajo {
-    background: #c8e6c9;
+.badge-huella {
+    background: #e8f5e8;
     color: #2e7d32;
 }
 
-.badge-medio {
-    background: #fff9c4;
-    color: #f57f17;
+.badge-tarjeta {
+    background: #fff3e0;
+    color: #f57c00;
 }
 
-.badge-alto {
-    background: #ffcdd2;
-    color: #c62828;
+.badge-pin {
+    background: #e3f2fd;
+    color: #1976d2;
 }
 
 /* Botones de acción */
 .acciones {
     display: flex;
     gap: 8px;
+}
+
+/* Foto en tabla */
+.foto-tabla {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+}
+
+.foto-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7f8c8d;
+    border: 2px solid #e0e0e0;
 }
 
 /* Información de soporte */
@@ -487,6 +707,9 @@ td {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     border-left: 4px solid #1abc9c;
     transition: all 0.3s ease;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .soporte-info:hover {
@@ -522,7 +745,7 @@ td {
     font-size: 13px;
     color: #ecf0f1;
     border-radius: 8px;
-    max-width: 1200px;
+    max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -562,7 +785,7 @@ td {
     display: none;
     position: absolute;
     background-color: white;
-    min-width: 160px;
+    min-width: 200px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     border-radius: 8px;
     z-index: 1;
@@ -582,6 +805,9 @@ td {
     display: block;
     cursor: pointer;
     border-bottom: 1px solid #f1f1f1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .dropdown-item:hover {
@@ -643,13 +869,13 @@ td {
     display: none;
     position: absolute;
     left: 0;
-    bottom: 48px; /* <- cambiado: elimina el gap que provocaba que el menú se cerrara al mover el mouse */
+    bottom: 48px;
     background: #2c3e50;
     min-width: 220px;
     border-radius: 8px;
     box-shadow: 0px 8px 24px rgba(0,0,0,0.18);
     z-index: 1010;
-    pointer-events: auto; /* asegurar que el panel reciba eventos del ratón */
+    pointer-events: auto;
 }
 
 /* Mostrar menú cuando el puntero está sobre .menu o cuando tiene foco interno (teclado/tab) */
@@ -667,7 +893,7 @@ td {
 .menu div ul,
 .menu div ul li,
 .menu div ul li a {
-    color: #ffffff; /* texto en blanco */
+    color: #ffffff;
 }
 
 /* Iconos dentro de las opciones también en blanco */
@@ -695,21 +921,20 @@ td {
 /* Cambios: usar #1db598 cuando el mouse esté cerca (hover) o haya foco */
 .menu:hover i,
 .menu:focus-within i {
-    background: #2c3e50; /* color solicitado */
+    background: #2c3e50;
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(29,181,152,0.18);
 }
 
 /* Resaltar el panel del menú con un borde sutil del mismo color */
 .menu div {
-    /* ...existing properties... */
-    border: 2px solid transparent; /* asegurar que haya borde para animar */
+    border: 2px solid transparent;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .menu:hover div,
 .menu:focus-within div {
-    border-color: rgba(29,181,152,0.18); /* borde sutil verde cuando el mouse está cerca */
+    border-color: rgba(29,181,152,0.18);
     box-shadow: 0 10px 30px rgba(29,181,152,0.06);
 }
 
@@ -721,13 +946,13 @@ td {
 
 /* Eliminar el punto blanco (marcador) en las opciones del menú */
 .menu div ul {
-    list-style: none;    /* quita el marcador */
+    list-style: none;
     margin: 0;
     padding: 0;
 }
 
 .menu div ul li {
-    list-style: none;    /* refuerzo para compatibilidad */
+    list-style: none;
 }
 
 /* Ocultar explícitamente el marcador en navegadores que usan ::marker */
@@ -741,7 +966,7 @@ td {
     display: block;
     padding: 12px;
     text-decoration: none;
-    color: #ffffff; /* ya definido pero reforzado */
+    color: #ffffff;
 }
 
 /* Responsive */
@@ -783,9 +1008,14 @@ td {
         flex-direction: column;
     }
 
-    .add-panel, .list-panel {
+    .form-panel, .list-panel {
         padding: 25px 20px;
         max-width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
     }
 
     fieldset {
@@ -801,6 +1031,7 @@ td {
     }
 
     input[type="text"],
+    input[type="email"],
     textarea,
     select {
         font-size: 14px;
@@ -809,7 +1040,7 @@ td {
 
     .btn {
         font-size: 14px;
-        padding: 14px 28px;
+        padding: 10px 20px;
     }
 
     /* Tabla responsive */
@@ -848,5 +1079,18 @@ td {
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
+    }
+
+    .filter-section {
+        flex-direction: column;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .credencial-options {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
