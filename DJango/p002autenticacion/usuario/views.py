@@ -32,6 +32,18 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'account/login.html', {'form':form})
 
+def register_personal(request):             #En login
+    if request.method == 'POST':
+        form = PersonalForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Empleado registrado correctamente.")
+            return redirect('usuario:login')  # Redirige al login tras registro
+    else:
+        form = PersonalForm()
+
+    return render(request, 'account/register_personal.html', {'form': form})
+
 @login_required
 def dashboard(request):
     ultimos_empleados = Personal.objects.order_by('fecha_ingreso')[:10]  # Últimos 10 agregados

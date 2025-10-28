@@ -13,6 +13,8 @@ urlpatterns = [
     path('ubicaciones/', views.ubicaciones_view, name='ubicaciones'),
     path('personal/', views.gestion_personal, name='gestion_personal'),
     path('personal/<int:id>/editar/', views.editar_personal, name='editar_personal'),
+    path('register/personal/', views.register_personal, name='register_personal'),
+
 
     
     path('password-change/',auth_views.PasswordChangeView.as_view(), name='password_change'),

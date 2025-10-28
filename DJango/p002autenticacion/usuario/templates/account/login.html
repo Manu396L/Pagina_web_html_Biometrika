@@ -48,6 +48,10 @@
                     <a href="../admin/cambiar_contraseña.html" class="forgot-password">¿Olvidó su contraseña?</a>
                 </div>
                 <button type="submit" class="login-button">Iniciar Sesión</button>
+                <div class="register">
+                    ¿No tienes una cuenta? 
+                    <a href="{% url 'usuario:register_personal' %}" class="register-link">Regístrate aquí</a>
+                </div>
                 <div class="error-message" id="errorMessage">
                     Usuario o contraseña incorrectos. Inténtelo de nuevo.
                 </div>
