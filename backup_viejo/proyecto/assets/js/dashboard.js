@@ -1,15 +1,15 @@
 // dashboard-charts.js
 // Inicializar gráficos cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
-    // Gráfico de Asistencia (Doughnut)
+    // Gráfico de Asistencia (Doughnut) - DATOS DE PRESENTISMO
     const asistenciaCtx = document.getElementById('asistenciaChart').getContext('2d');
     const asistenciaChart = new Chart(asistenciaCtx, {
         type: 'doughnut',
         data: {
-            labels: ['Ausencia', 'Asistencia'],
+            labels: ['Asistencia', 'Ausencia', 'Tardanzas'],
             datasets: [{
-                data: [0, 21],
-                backgroundColor: ['#e74c3c', '#2ecc71'],
+                data: [245, 45, 30], // 245 Presentes, 45 Ausentes, 30 Tardanzas
+                backgroundColor: ['#2ecc71', '#e74c3c', '#f39c12'],
                 borderWidth: 0
             }]
         },
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['Online', 'Offline', 'No Autorizado'],
             datasets: [{
-                data: [2, 1, 0],
+                data: [57, 8, 2], // 57 Online, 8 Offline, 2 No Autorizado
                 backgroundColor: ['#2ecc71', '#e74c3c', '#f39c12'],
                 borderWidth: 0
             }]
@@ -57,15 +57,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Gráfico de Programación (Doughnut)
-    const programacionCtx = document.getElementById('programacionChart').getContext('2d');
-    const programacionChart = new Chart(programacionCtx, {
+    // Gráfico de Presentismo (Doughnut) - DATOS COHERENTES
+    const presentismoCtx = document.getElementById('presentismoChart').getContext('2d');
+    const presentismoChart = new Chart(presentismoCtx, {
         type: 'doughnut',
         data: {
-            labels: ['No Programado', 'Programado'],
+            labels: ['Presentes', 'Ausentes', 'Tardanzas'],
             datasets: [{
-                data: [2, 19],
-                backgroundColor: ['#3498db', '#9b59b6'],
+                data: [245, 45, 30], // Mismos datos que asistencia pero enfocado en presentismo
+                backgroundColor: ['#2ecc71', '#e74c3c', '#3498db'],
                 borderWidth: 0
             }]
         },
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Gráfico de Excepciones de Asistencia (Bar)
+    // Gráfico de Excepciones de Asistencia (Bar) - DATOS RELACIONADOS
     const excepcionesCtx = document.getElementById('excepcionesChart').getContext('2d');
     const excepcionesChart = new Chart(excepcionesCtx, {
         type: 'bar',
@@ -94,19 +94,19 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [
                 {
                     label: 'Llegadas tarde',
-                    data: [1, 2, 1, 3, 2, 0, 0],
+                    data: [8, 6, 7, 5, 4, 0, 0], // Total 30 tardanzas semanales
                     backgroundColor: '#3498db',
                     borderRadius: 4
                 },
                 {
                     label: 'Salidas temprano',
-                    data: [0, 1, 2, 1, 1, 0, 0],
+                    data: [3, 4, 2, 5, 6, 0, 0], // Total 20 salidas temprano
                     backgroundColor: '#e74c3c',
                     borderRadius: 4
                 },
                 {
                     label: 'Ausencia',
-                    data: [0, 0, 1, 0, 1, 0, 0],
+                    data: [7, 6, 8, 9, 15, 0, 0], // Total 45 ausencias semanales
                     backgroundColor: '#f39c12',
                     borderRadius: 4
                 }
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        stepSize: 1
+                        stepSize: 5
                     }
                 }
             }
