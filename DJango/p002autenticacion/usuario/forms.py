@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile
-from .models import Personal
+from .models import Profile, Personal, Ubicacion
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -38,3 +37,19 @@ class PersonalForm(forms.ModelForm):
             'fecha_ingreso': forms.DateInput(attrs={'type': 'date'}),
         }
         
+class UbicacionForm(forms.ModelForm):
+    class Meta:
+        model = Ubicacion
+        fields = [
+            'tipo_ubicacion',
+            'nombre_sede',
+            'codigo_unico',
+            'direccion',
+            'descripcion',
+            'dispositivo_biometrico',
+            'nivel_seguridad',
+        ]
+        widgets = {
+            'direccion': forms.Textarea(attrs={'rows': 3}),
+            'descripcion': forms.Textarea(attrs={'rows': 3}),
+        }

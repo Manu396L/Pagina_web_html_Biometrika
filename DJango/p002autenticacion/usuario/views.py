@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.contrib.auth  import authenticate, login,logout
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import UserRegistrationForm, UserEditForm, LoginForm, ProfileEditForm, PersonalForm
-from .models import Profile, Personal
+from .forms import UserRegistrationForm, UserEditForm, LoginForm, ProfileEditForm, PersonalForm, UbicacionForm
+from .models import Profile, Personal, Ubicacion
 
 """===================================
             MANEJO DE SESION
@@ -90,9 +90,50 @@ def logged_out(request):
     logout(request)
     return render(request, 'registration/logged_out.html')
 
+"""
+=============================
+        SEDES Y AREAS
+============================="""
+
 @login_required
 def ubicaciones_view(request):
-    return render(request, 'account/ubicaciones.html')
+    from .models import Ubicacion
+    from .forms import UbicacionForm
+
+    ubicaciones = Ubicacion.objects.all().order_by('nombre_sede')
+    form = UbicacionForm()
+
+    if request.method == 'POST':
+        form = UbicacionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "La ubicación ha sido registrada correctamente.")
+            return redirect('usuario:ubicaciones')
+        else:
+            messages.error(request, "Error al registrar la ubicación. Verifique los campos.")
+
+    return render(request, 'account/ubicaciones.html', {
+        'form': form,
+        'ubicaciones': ubicaciones,
+    }
+    )
+
+# Editar ubicación
+def editar_ubicacion(request, id):
+    ubicacion = get_object_or_404(Ubicacion, id=id)
+    if request.method == 'POST':
+        if 'guardar' in request.POST:
+            form = UbicacionForm(request.POST, instance=ubicacion)
+            if form.is_valid():
+                form.save()
+                return redirect('usuario:ubicaciones')
+        elif 'cancelar' in request.POST:
+            return redirect('usuario:ubicaciones')
+    else:
+        form = UbicacionForm(instance=ubicacion)
+
+    return render(request, 'account/ubicacion_editar.html', {'form': form})
+
 
 """===================================
             PERSONAL
