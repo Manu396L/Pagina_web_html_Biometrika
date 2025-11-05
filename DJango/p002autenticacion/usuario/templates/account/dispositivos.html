@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Gestión de Dispositivos{% endblock %}
+
+{% block content %}
+<a href="{% url 'usuario:dashboard' %}" class="btn-volver" title="Volver al inicio">
+    <i class="fa-solid fa-arrow-left"></i>
+</a>
+
+<main class="contenido">
+    <header>
+        <h1><i class="fa-solid fa-microchip"></i> Gestión de Dispositivos Biométricos</h1>
+        <p>Administre y configure los dispositivos de control de acceso biométrico</p>
+    </header>
+
+    <div class="main-container">
+        <div class="form-panel">
+            <h2><i class="fa-solid fa-plus-circle"></i> <span id="form-title">Nuevo Dispositivo</span></h2>
+
+            <div class="mensaje-exito" id="mensaje-exito">
+                <i class="fa-solid fa-check"></i>
+                <span id="mensaje-texto">El dispositivo ha sido registrado correctamente.</span>
+            </div>
+
+            <form id="formularioDispositivo">
+                <!-- Contenido del formulario igual que antes -->
+                <!-- ... todo tu HTML anterior de campos ... -->
+            </form>
+        </div>
+
+        <div class="list-panel">
+            <!-- Tabla de dispositivos -->
+            <!-- ... contenido igual que en tu archivo original ... -->
+        </div>
+    </div>
+
+    <div class="soporte-info">
+        <i class="fa-solid fa-headset"></i>
+        <strong>¿Necesita ayuda?</strong><br>
+        Contacte con Soporte Técnico al <strong>4666-1212</strong> o al correo 
+        <a href="mailto:soporte@biometrika.com">soporte@biometrika.com</a>
+    </div>
+
+    <div class="footer">
+        <div>Copyright© Sistema Biométrico 2025</div>
+        <div>Versión 1.0</div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<link rel="stylesheet" href="{% static 'account/css/style_dispositivos.css' %}">
+<script src="{% static 'account/js/dispositivos.js' %}"></script>
+{% endblock %}

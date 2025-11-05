@@ -198,3 +198,21 @@ def editar_personal(request, id):
         'form': form,
         'empleado': empleado
     })
+
+#=============================
+#           Dispositivos
+#=============================
+from django.shortcuts import render
+
+def dispositivos(request):
+    return render(request, 'account/dispositivos.html')
+
+
+#=============================
+#           Alertas
+#=============================
+@login_required
+def alertas_view(request):
+    # Aquí podrías luego traer datos reales desde la base de datos (dispositivos, estados, etc.)
+    # Por ahora solo cargaremos el template
+    return render(request, 'account/alertas.html')

@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Alertas - Dispositivos Caídos{% endblock %}
+
+{% block content %}
+<a href="{% url 'usuario:dashboard' %}" class="btn-volver" title="Volver al inicio">
+    <i class="fa-solid fa-arrow-left"></i>
+</a>
+
+<!-- Barra lateral -->
+<nav class="barra_opciones"> 
+    <h2>
+        <div class="fingerprint-scanner" id="fingerprintScanner">
+            <i class="fas fa-fingerprint fa-1x text-primary"> Biometrika</i>
+        </div> 
+    </h2>
+    <ul>
+        <li><a href="{% url 'usuario:dashboard' %}"><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
+        <li><a href="{% url 'usuario:ubicaciones' %}"><i class="fa-solid fa-building"></i>Sedes y Áreas</a></li>
+        <li><a href="{% url 'usuario:gestion_personal' %}"><i class="fa-solid fa-users"></i>Gestión de Personal</a></li>
+        <li><a href="#"><i class="fas fa-microchip"></i>Dispositivos</a></li>
+        <li><a href="#"><i class="fa-solid fa-headset"></i>Soporte</a></li> 
+        <li><a href="#"><i class="fa-solid fa-file-lines"></i>Reportes</a></li>
+        <li><a href="{% url 'usuario:alertas' %}" class="active"><i class="fa-solid fa-bell"></i>Alertas</a></li>
+    </ul>
+</nav>
+
+<!-- Contenido principal -->
+<main class="contenido">
+    <header>
+        <h1><i class="fa-solid fa-triangle-exclamation"></i> <b>Alertas - Dispositivos Caídos</b></h1>
+    </header>
+
+    <section class="resumen-alertas">
+        <div class="resumen-item criticas">
+            <div class="resumen-valor">8</div>
+            <div class="resumen-label">Dispositivos Críticos</div>
+        </div>
+        <div class="resumen-item advertencias">
+            <div class="resumen-valor">12</div>
+            <div class="resumen-label">Con Problemas</div>
+        </div>
+        <div class="resumen-item estables">
+            <div class="resumen-valor">47</div>
+            <div class="resumen-label">Dispositivos Estables</div>
+        </div>
+    </section>
+
+    <section class="filtros-alertas">
+        <h3><i class="fa-solid fa-filter"></i> Filtros de Búsqueda</h3>
+        <div class="filtros-grid">
+            <div class="filtro-group">
+                <label for="filtro-sede">Sede</label>
+                <select id="filtro-sede">
+                    <option value="">Todas las sedes</option>
+                    <option value="sede-central">Sede Central</option>
+                    <option value="sede-norte">Sede Norte</option>
+                    <option value="sede-sur">Sede Sur</option>
+                </select>
+            </div>
+            <div class="filtro-group">
+                <label for="filtro-estado">Estado</label>
+                <select id="filtro-estado">
+                    <option value="">Todos los estados</option>
+                    <option value="caido">Caído</option>
+                    <option value="inestable">Inestable</option>
+                    <option value="online">Online</option>
+                </select>
+            </div>
+            <div class="filtro-group">
+                <label for="filtro-autenticacion">Tipo de Autenticación</label>
+                <select id="filtro-autenticacion">
+                    <option value="">Todos</option>
+                    <option value="huella">Huella</option>
+                    <option value="tarjeta">Tarjeta</option>
+                    <option value="pin">PIN</option>
+                    <option value="facial">Facial</option>
+                </select>
+            </div>
+            <div class="filtro-group">
+                <label for="filtro-dispositivo">Dispositivo</label>
+                <input type="text" id="filtro-dispositivo" placeholder="Buscar dispositivo...">
+            </div>
+        </div>
+        <div class="botones-filtro">
+            <button class="btn-filtro btn-limpiar"><i class="fa-solid fa-eraser"></i> Limpiar</button>
+            <button class="btn-filtro btn-aplicar"><i class="fa-solid fa-filter"></i> Aplicar</button>
+        </div>
+    </section>
+
+    <section class="tabla-alertas">
+        <h2><i class="fa-solid fa-list"></i> Dispositivos con Alertas</h2>
+        <div class="desplazamiento">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dispositivo</th>
+                        <th>Sede</th>
+                        <th>Oficina</th>
+                        <th>Ubicación</th>
+                        <th>Último Registro</th>
+                        <th>Tipo Auth</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>    
+                <tbody>
+                    <!-- Ejemplo estático -->
+                    <tr>
+                        <td><strong>BIO-001</strong></td>
+                        <td>Sede Central</td>
+                        <td>Recepción Principal</td>
+                        <td>Planta Baja - Entrada A</td>
+                        <td>15/03/2025 08:30:45</td>
+                        <td><span class="tipo-autenticacion"><i class="fa-solid fa-fingerprint"></i>Huella</span></td>
+                        <td><span class="estado-dispositivo estado-caido">Caído</span></td>
+                        <td><button class="btn-reportar"><i class="fa-solid fa-flag"></i> Reportar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="soporte-info">
+        <i class="fa-solid fa-headset"></i>
+        <strong>¿Necesita ayuda?</strong><br>
+        Contacte con Soporte Técnico al <strong>4666-1212</strong> o al correo 
+        <a href="mailto:soporte@biometrika.com">soporte@biometrika.com</a>
+    </div>
+
+    <div class="footer">
+        <div>Copyright © Sistema Biométrico 2025</div>
+        <div>Versión 1.0</div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'account/js/alertas.js' %}"></script>
+{% endblock %}
