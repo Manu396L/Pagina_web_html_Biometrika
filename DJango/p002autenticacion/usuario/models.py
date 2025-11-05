@@ -23,6 +23,14 @@ class Personal(models.Model):
     fecha_ingreso = models.DateField()
     activo = models.BooleanField(default=True)
 
+    # 👇 Relación con Ubicación (sede)
+    ubicacion = models.ForeignKey(
+        'Ubicacion',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='empleados'
+    )
+
     def __str__(self):
         return f"{self.apellido}, {self.nombre}"
 

@@ -65,42 +65,51 @@
 
             <!--Actividad reciente-->
 <section class="actividad">
-    <div>
-        <h2><i class="fa-solid fa-clock-rotate-left"></i> Actividad Reciente</h2>
-        <div class="desplazamiento">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Empleado</th>
-                        <th>Cargo</th>
-                        <th>Fecha de Ingreso</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>    
-                <tbody>
-                    {% for empleado in ultimos_empleados %}
-                    <tr>
-                        <td>{{ empleado.apellido }}, {{ empleado.nombre }}</td>
-                        <td>{{ empleado.cargo|default:"—" }}</td>
-                        <td>{{ empleado.fecha_ingreso|date:"d/m/Y" }}</td>
-                        <td>
-                            {% if empleado.activo %}
-                                <span class="estado aprobado">Activo</span>
-                            {% else %}
-                                <span class="estado denegado">Inactivo</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4">No hay empleados registrados.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+  <div>
+    <h2><i class="fa-solid fa-clock-rotate-left"></i> Actividad Reciente</h2>
+    <div class="desplazamiento">
+      <table>
+        <thead>
+          <tr>
+            <th>Empleado</th>
+            <th>Cargo</th>
+            <th>Fecha de Ingreso</th>
+            <th>Sede</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for empleado in ultimos_empleados %}
+          <tr>
+            <td>{{ empleado.apellido }}, {{ empleado.nombre }}</td>
+            <td>{{ empleado.cargo|default:"—" }}</td>
+            <td>{{ empleado.fecha_ingreso|date:"d/m/Y" }}</td>
+            <td>
+              {% if empleado.sede %}
+                {{ empleado.sede.nombre_sede }}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td>
+              {% if empleado.activo %}
+                <span class="estado aprobado">Activo</span>
+              {% else %}
+                <span class="estado denegado">Inactivo</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5">No hay empleados registrados.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
 </section>
+
 
 
 
