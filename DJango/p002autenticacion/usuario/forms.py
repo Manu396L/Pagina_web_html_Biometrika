@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile, Personal, Ubicacion
+from .models import Profile, Personal, Ubicacion, Dispositivo
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -55,4 +55,20 @@ class UbicacionForm(forms.ModelForm):
         widgets = {
             'direccion': forms.Textarea(attrs={'rows': 3}),
             'descripcion': forms.Textarea(attrs={'rows': 3}),
+        }
+
+#===============================================================
+#                   DISPO
+#================================================================
+class DispositivoForm(forms.ModelForm):
+    class Meta:
+        model = Dispositivo
+        fields = [
+            'nombre', 'numero_serie', 'tipo_sede', 'ubicacion', 
+            'direccion_fisica', 'direccion_ip', 'zona_horaria',
+            'intervalo_solicitud', 'estado', 'tipo_dispositivo', 'observaciones'
+        ]
+        widgets = {
+            'direccion_fisica': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Ej: Planta Baja, Edificio A'}),
+            'observaciones': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Notas adicionales sobre el dispositivo'}),
         }

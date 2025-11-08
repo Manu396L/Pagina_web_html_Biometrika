@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar Dispositivo{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'account/css/style_dispositivos.css' %}">
+
+<a href="{% url 'usuario:dispositivos' %}" class="btn-volver" title="Volver">
+    <i class="fa-solid fa-arrow-left"></i>
+</a>
+
+<main class="contenido-dispositivos">
+    <header class="header-dispositivos">
+        <h1><i class="fa-solid fa-edit"></i> Editar Dispositivo</h1>
+        <p>Modifique la información del dispositivo: <strong>{{ dispositivo.nombre }}</strong></p>
+    </header>
+
+    {% if messages %}
+        <div class="mensajes-container">
+            {% for message in messages %}
+                <div class="mensaje {{ message.tags }}">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>{{ message }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="form-editar-container">
+        <form method="post" class="form-editar">
+            {% csrf_token %}
+
+            <!-- Información Básica -->
+            <div class="form-section">
+                <h3><i class="fa-solid fa-info-circle"></i> Información Básica</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.nombre.id_for_label }}">
+                            <i class="fa-solid fa-tag"></i> Nombre del Dispositivo: <span class="required">*</span>
+                        </label>
+                        {{ form.nombre }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.numero_serie.id_for_label }}">
+                            <i class="fa-solid fa-barcode"></i> Número de Serie: <span class="required">*</span>
+                        </label>
+                        {{ form.numero_serie }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.tipo_sede.id_for_label }}">
+                            <i class="fa-solid fa-building"></i> Tipo de Sede: <span class="required">*</span>
+                        </label>
+                        {{ form.tipo_sede }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.ubicacion.id_for_label }}">
+                            <i class="fa-solid fa-map-marker-alt"></i> Área/Ubicación: <span class="required">*</span>
+                        </label>
+                        {{ form.ubicacion }}
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="{{ form.direccion_fisica.id_for_label }}">
+                        <i class="fa-solid fa-location-dot"></i> Dirección Física:
+                    </label>
+                    {{ form.direccion_fisica }}
+                </div>
+            </div>
+
+            <!-- Configuración de Red -->
+            <div class="form-section">
+                <h3><i class="fa-solid fa-network-wired"></i> Configuración de Red</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.direccion_ip.id_for_label }}">
+                            <i class="fa-solid fa-globe"></i> Dirección IP: <span class="required">*</span>
+                        </label>
+                        {{ form.direccion_ip }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.zona_horaria.id_for_label }}">
+                            <i class="fa-solid fa-clock"></i> Zona Horaria: <span class="required">*</span>
+                        </label>
+                        {{ form.zona_horaria }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.intervalo_solicitud.id_for_label }}">
+                        <i class="fa-solid fa-hourglass-half"></i> Intervalo de Solicitud (minutos):
+                    </label>
+                    {{ form.intervalo_solicitud }}
+                    <small>Tiempo entre solicitudes de sincronización con el servidor</small>
+                </div>
+            </div>
+
+            <!-- Estado y Configuración -->
+            <div class="form-section">
+                <h3><i class="fa-solid fa-cog"></i> Estado y Configuración</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.estado.id_for_label }}">
+                            <i class="fa-solid fa-power-off"></i> Estado del Dispositivo: <span class="required">*</span>
+                        </label>
+                        {{ form.estado }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.tipo_dispositivo.id_for_label }}">
+                            <i class="fa-solid fa-fingerprint"></i> Tipo de Dispositivo: <span class="required">*</span>
+                        </label>
+                        {{ form.tipo_dispositivo }}
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="{{ form.observaciones.id_for_label }}">
+                        <i class="fa-solid fa-comment"></i> Observaciones:
+                    </label>
+                    {{ form.observaciones }}
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" name="guardar" class="btn-guardar">
+                    <i class="fa-solid fa-save"></i> GUARDAR CAMBIOS
+                </button>
+                <button type="submit" name="cancelar" class="btn-cancelar">
+                    <i class="fa-solid fa-times"></i> CANCELAR
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="footer">
+        <div>Copyright© Sistema Biométrico 2025</div>
+        <div>Versión 1.0</div>
+    </div>
+</main>
+{% endblock %}

@@ -4,34 +4,253 @@
 {% block title %}Gestión de Dispositivos{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'account/css/style_dispositivos.css' %}">
+
 <a href="{% url 'usuario:dashboard' %}" class="btn-volver" title="Volver al inicio">
     <i class="fa-solid fa-arrow-left"></i>
 </a>
 
-<main class="contenido">
-    <header>
+<main class="contenido-dispositivos">
+    <header class="header-dispositivos">
         <h1><i class="fa-solid fa-microchip"></i> Gestión de Dispositivos Biométricos</h1>
         <p>Administre y configure los dispositivos de control de acceso biométrico</p>
     </header>
 
-    <div class="main-container">
+    {% if messages %}
+        <div class="mensajes-container">
+            {% for message in messages %}
+                <div class="mensaje {{ message.tags }}">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>{{ message }}</span>
+                    <button class="cerrar-mensaje">&times;</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="main-container-dispositivos">
+        <!-- Panel del Formulario -->
         <div class="form-panel">
             <h2><i class="fa-solid fa-plus-circle"></i> <span id="form-title">Nuevo Dispositivo</span></h2>
 
-            <div class="mensaje-exito" id="mensaje-exito">
-                <i class="fa-solid fa-check"></i>
-                <span id="mensaje-texto">El dispositivo ha sido registrado correctamente.</span>
-            </div>
+            <form id="formularioDispositivo" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="agregar" value="1" id="accion-form">
+                <input type="hidden" name="id" id="dispositivo-id">
 
-            <form id="formularioDispositivo">
-                <!-- Contenido del formulario igual que antes -->
-                <!-- ... todo tu HTML anterior de campos ... -->
+                <!-- Información Básica -->
+                <div class="form-section">
+                    <h3><i class="fa-solid fa-info-circle"></i> Información Básica</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ form.nombre.id_for_label }}">
+                                <i class="fa-solid fa-tag"></i> Nombre del Dispositivo: <span class="required">*</span>
+                            </label>
+                            {{ form.nombre }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.numero_serie.id_for_label }}">
+                                <i class="fa-solid fa-barcode"></i> Número de Serie: <span class="required">*</span>
+                            </label>
+                            {{ form.numero_serie }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ form.tipo_sede.id_for_label }}">
+                                <i class="fa-solid fa-building"></i> Tipo de Sede: <span class="required">*</span>
+                            </label>
+                            {{ form.tipo_sede }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.ubicacion.id_for_label }}">
+                                <i class="fa-solid fa-map-marker-alt"></i> Área/Ubicación: <span class="required">*</span>
+                            </label>
+                            {{ form.ubicacion }}
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="{{ form.direccion_fisica.id_for_label }}">
+                            <i class="fa-solid fa-location-dot"></i> Dirección Física:
+                        </label>
+                        {{ form.direccion_fisica }}
+                    </div>
+                </div>
+
+                <!-- Configuración de Red -->
+                <div class="form-section">
+                    <h3><i class="fa-solid fa-network-wired"></i> Configuración de Red</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ form.direccion_ip.id_for_label }}">
+                                <i class="fa-solid fa-globe"></i> Dirección IP: <span class="required">*</span>
+                            </label>
+                            {{ form.direccion_ip }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.zona_horaria.id_for_label }}">
+                                <i class="fa-solid fa-clock"></i> Zona Horaria: <span class="required">*</span>
+                            </label>
+                            {{ form.zona_horaria }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.intervalo_solicitud.id_for_label }}">
+                            <i class="fa-solid fa-hourglass-half"></i> Intervalo de Solicitud (minutos):
+                        </label>
+                        {{ form.intervalo_solicitud }}
+                        <small>Tiempo entre solicitudes de sincronización con el servidor</small>
+                    </div>
+                </div>
+
+                <!-- Estado y Configuración -->
+                <div class="form-section">
+                    <h3><i class="fa-solid fa-cog"></i> Estado y Configuración</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="{{ form.estado.id_for_label }}">
+                                <i class="fa-solid fa-power-off"></i> Estado del Dispositivo: <span class="required">*</span>
+                            </label>
+                            {{ form.estado }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.tipo_dispositivo.id_for_label }}">
+                                <i class="fa-solid fa-fingerprint"></i> Tipo de Dispositivo: <span class="required">*</span>
+                            </label>
+                            {{ form.tipo_dispositivo }}
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="{{ form.observaciones.id_for_label }}">
+                            <i class="fa-solid fa-comment"></i> Observaciones:
+                        </label>
+                        {{ form.observaciones }}
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-guardar" id="btn-guardar">
+                        <i class="fa-solid fa-save"></i> GUARDAR DISPOSITIVO
+                    </button>
+                    <button type="button" class="btn-nuevo" id="btn-nuevo">
+                        <i class="fa-solid fa-plus"></i> NUEVO DISPOSITIVO
+                    </button>
+                </div>
             </form>
         </div>
 
+        <!-- Panel de Listado -->
         <div class="list-panel">
-            <!-- Tabla de dispositivos -->
-            <!-- ... contenido igual que en tu archivo original ... -->
+            <div class="list-header">
+                <h2><i class="fa-solid fa-list"></i> Dispositivos Registrados</h2>
+                <div class="botones-accion-rapida">
+                    <button class="btn-accion-rapida btn-acceso">
+                        <i class="fa-solid fa-bolt"></i> Acceso Rápido
+                    </button>
+                    <button class="btn-accion-rapida btn-dispositivo">
+                        <i class="fa-solid fa-microchip"></i> Dispositivo
+                    </button>
+                    <button class="btn-accion-rapida btn-mantenimiento">
+                        <i class="fa-solid fa-wrench"></i> Mantenimiento
+                    </button>
+                </div>
+            </div>
+
+            <div class="filtros-container">
+                <div class="filtro-busqueda">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="buscar-dispositivo" placeholder="Buscar por nombre o número de serie">
+                </div>
+                <div class="filtro-select">
+                    <select id="filtro-estado">
+                        <option value="">Todos los estados</option>
+                        <option value="ACTIVO">Activo</option>
+                        <option value="PAUSADO">Pausado</option>
+                        <option value="INACTIVO">Inactivo</option>
+                    </select>
+                </div>
+                <div class="filtro-select">
+                    <select id="filtro-tipo">
+                        <option value="">Todos los tipos</option>
+                        <option value="Lector de Huella">Lector de Huella</option>
+                        <option value="Lector de Iris">Lector de Iris</option>
+                        <option value="Reconocimiento Facial">Reconocimiento Facial</option>
+                        <option value="Tarjeta RFID">Tarjeta RFID</option>
+                    </select>
+                </div>
+                <button class="btn-limpiar-filtros" id="limpiar-filtros">
+                    <i class="fa-solid fa-filter-circle-xmark"></i> Limpiar Filtros
+                </button>
+            </div>
+
+            <div class="tabla-container">
+                <table class="tabla-dispositivos">
+                    <thead>
+                        <tr>
+                            <th>NOMBRE</th>
+                            <th>N° SERIE</th>
+                            <th>IP</th>
+                            <th>ÁREA</th>
+                            <th>TIPO SEDE</th>
+                            <th>ESTADO</th>
+                            <th>ÚLTIMA CONEXIÓN</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-dispositivos-body">
+                        {% for dispositivo in dispositivos %}
+                        <tr data-estado="{{ dispositivo.estado }}" data-tipo="{{ dispositivo.tipo_dispositivo }}">
+                            <td>{{ dispositivo.nombre }}</td>
+                            <td>{{ dispositivo.numero_serie }}</td>
+                            <td>{{ dispositivo.direccion_ip }}</td>
+                            <td>{{ dispositivo.ubicacion.nombre_sede|default:"Sin asignar" }}</td>
+                            <td>
+                                <span class="badge-sede badge-{{ dispositivo.tipo_sede|lower }}">
+                                    {{ dispositivo.get_tipo_sede_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge-estado badge-{{ dispositivo.estado|lower }}">
+                                    {{ dispositivo.get_estado_display }}
+                                </span>
+                            </td>
+                            <td>{{ dispositivo.ultima_conexion|date:"d/m/Y, H:i"|default:"Nunca" }}</td>
+                            <td class="acciones">
+                                <a href="{% url 'usuario:editar_dispositivo' dispositivo.id %}" class="btn-editar" title="Editar">
+                                    <i class="fa-solid fa-edit"></i> Editar
+                                </a>
+                                <form method="post" style="display: inline;" onsubmit="return confirm('¿Está seguro de eliminar este dispositivo?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="eliminar" value="1">
+                                    <input type="hidden" name="id" value="{{ dispositivo.id }}">
+                                    <button type="submit" class="btn-eliminar" title="Eliminar">
+                                        <i class="fa-solid fa-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="sin-datos">
+                                <i class="fa-solid fa-inbox"></i>
+                                <p>No hay dispositivos registrados</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -47,9 +266,6 @@
         <div>Versión 1.0</div>
     </div>
 </main>
-{% endblock %}
 
-{% block extra_js %}
-<link rel="stylesheet" href="{% static 'account/css/style_dispositivos.css' %}">
 <script src="{% static 'account/js/dispositivos.js' %}"></script>
 {% endblock %}

@@ -3,9 +3,10 @@ from django.contrib.auth  import authenticate, login,logout
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils import timezone
 
-from .forms import UserRegistrationForm, UserEditForm, LoginForm, ProfileEditForm, PersonalForm, UbicacionForm
-from .models import Profile, Personal, Ubicacion
+from .forms import UserRegistrationForm, UserEditForm, LoginForm, ProfileEditForm, PersonalForm, UbicacionForm, DispositivoForm
+from .models import Profile, Personal, Ubicacion, Dispositivo
 
 """===================================
             MANEJO DE SESION
@@ -202,12 +203,67 @@ def editar_personal(request, id):
 #=============================
 #           Dispositivos
 #=============================
-from django.shortcuts import render
 
+@login_required
 def dispositivos(request):
-    return render(request, 'account/dispositivos.html')
+    dispositivos_list = Dispositivo.objects.all().order_by('-fecha_registro')  # ← Cambia el nombre
+    form = DispositivoForm()
 
+    if request.method == 'POST':
+        if 'agregar' in request.POST:
+            form = DispositivoForm(request.POST)
+            if form.is_valid():
+                dispositivo = form.save(commit=False)
+                dispositivo.ultima_conexion = timezone.now()
+                dispositivo.save()
+                messages.success(request, "Dispositivo registrado correctamente.")
+                return redirect('usuario:dispositivos')
+            else:
+                messages.error(request, "Error al registrar el dispositivo. Verifique los campos.")
 
+        elif 'editar' in request.POST:
+            dispositivo_id = request.POST.get('id')
+            dispositivo = get_object_or_404(Dispositivo, pk=dispositivo_id)
+            form = DispositivoForm(request.POST, instance=dispositivo)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Dispositivo actualizado correctamente.")
+                return redirect('usuario:dispositivos')
+
+        elif 'eliminar' in request.POST:
+            dispositivo_id = request.POST.get('id')
+            dispositivo = get_object_or_404(Dispositivo, pk=dispositivo_id)
+            dispositivo.delete()
+            messages.success(request, "Dispositivo eliminado correctamente.")
+            return redirect('usuario:dispositivos')
+
+    return render(request, 'account/dispositivos.html', {
+        'dispositivos': dispositivos_list,  # ← Usa el nuevo nombre
+        'form': form,
+    })
+@login_required
+def editar_dispositivo(request, id):
+    dispositivo = get_object_or_404(Dispositivo, pk=id)
+    form = DispositivoForm(instance=dispositivo)
+
+    if request.method == 'POST':
+        if 'guardar' in request.POST:
+            form = DispositivoForm(request.POST, instance=dispositivo)
+            if form.is_valid():
+                form.save()
+                messages.success(request, f"Dispositivo {dispositivo.nombre} actualizado correctamente.")
+                return redirect('usuario:dispositivos')
+            else:
+                messages.error(request, "Error al actualizar el dispositivo. Verifique los campos.")
+
+        elif 'cancelar' in request.POST:
+            messages.info(request, "Edición cancelada.")
+            return redirect('usuario:dispositivos')
+
+    return render(request, 'account/dispositivo_editar.html', {
+        'form': form,
+        'dispositivo': dispositivo
+    })
 #=============================
 #           Alertas
 #=============================

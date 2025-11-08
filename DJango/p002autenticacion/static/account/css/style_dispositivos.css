@@ -1,0 +1,749 @@
+/* ===================================
+   ESTILOS GENERALES - DISPOSITIVOS
+   =================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.contenido-dispositivos {
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* ===================================
+   BOTÓN VOLVER
+   =================================== */
+
+.btn-volver {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: #2c3e50;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.btn-volver:hover {
+    background: #1a252f;
+    transform: scale(1.1);
+}
+
+/* ===================================
+   HEADER
+   =================================== */
+
+.header-dispositivos {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.header-dispositivos h1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.header-dispositivos h1 i {
+    color: #10b981;
+    margin-right: 15px;
+}
+
+.header-dispositivos p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+/* ===================================
+   MENSAJES
+   =================================== */
+
+.mensajes-container {
+    margin-bottom: 20px;
+}
+
+.mensaje {
+    background: #10b981;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    animation: slideDown 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.mensaje.error {
+    background: #ef4444;
+}
+
+.mensaje i {
+    font-size: 1.2rem;
+}
+
+.cerrar-mensaje {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.cerrar-mensaje:hover {
+    opacity: 1;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ===================================
+   CONTENEDOR PRINCIPAL
+   =================================== */
+
+.main-container-dispositivos {
+    display: grid;
+    grid-template-columns: 450px 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* ===================================
+   PANEL DE FORMULARIO
+   =================================== */
+
+.form-panel {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    height: fit-content;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.form-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-panel::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.form-panel::-webkit-scrollbar-thumb {
+    background: #10b981;
+    border-radius: 10px;
+}
+
+.form-panel h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-panel h2 i {
+    color: #10b981;
+}
+
+/* ===================================
+   SECCIONES DEL FORMULARIO
+   =================================== */
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section h3 {
+    color: #475569;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background: #f8fafc;
+    border-left: 4px solid #10b981;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-section h3 i {
+    color: #10b981;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    color: #475569;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-group label i {
+    color: #10b981;
+    font-size: 0.9rem;
+}
+
+.required {
+    color: #ef4444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group small {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+/* ===================================
+   BOTONES DEL FORMULARIO
+   =================================== */
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.btn-guardar,
+.btn-nuevo,
+.btn-cancelar {
+    flex: 1;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-guardar {
+    background: #10b981;
+    color: white;
+}
+
+.btn-guardar:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.btn-nuevo {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-nuevo:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-cancelar {
+    background: #64748b;
+    color: white;
+}
+
+.btn-cancelar:hover {
+    background: #475569;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3);
+}
+
+/* ===================================
+   PANEL DE LISTADO
+   =================================== */
+
+.list-panel {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.list-header h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.list-header h2 i {
+    color: #10b981;
+}
+
+.botones-accion-rapida {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-accion-rapida {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-acceso {
+    background: #10b981;
+    color: white;
+}
+
+.btn-acceso:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+.btn-dispositivo {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-dispositivo:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+.btn-mantenimiento {
+    background: #f59e0b;
+    color: white;
+}
+
+.btn-mantenimiento:hover {
+    background: #d97706;
+    transform: translateY(-2px);
+}
+
+/* ===================================
+   FILTROS
+   =================================== */
+
+.filtros-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filtro-busqueda {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+}
+
+.filtro-busqueda i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.filtro-busqueda input {
+    width: 100%;
+    padding: 12px 12px 12px 45px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.filtro-busqueda input:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.filtro-select select {
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    min-width: 180px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filtro-select select:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.btn-limpiar-filtros {
+    padding: 12px 20px;
+    background: #64748b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-limpiar-filtros:hover {
+    background: #475569;
+}
+
+/* ===================================
+   TABLA
+   =================================== */
+
+.tabla-container {
+    overflow-x: auto;
+}
+
+.tabla-dispositivos {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.tabla-dispositivos thead {
+    background: #2c3e50;
+    color: white;
+}
+
+.tabla-dispositivos thead th {
+    padding: 15px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.tabla-dispositivos tbody tr {
+    border-bottom: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.tabla-dispositivos tbody tr:hover {
+    background: #f8fafc;
+}
+
+.tabla-dispositivos tbody td {
+    padding: 15px 12px;
+    color: #475569;
+}
+
+.sin-datos {
+    text-align: center;
+    padding: 60px 20px !important;
+    color: #94a3b8;
+}
+
+.sin-datos i {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.sin-datos p {
+    font-size: 1.1rem;
+}
+
+/* ===================================
+   BADGES
+   =================================== */
+
+.badge-estado,
+.badge-sede {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.badge-activo {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-pausado {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-inactivo {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-sede_principal {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-almacen {
+    background: #fce7f3;
+    color: #9f1239;
+}
+
+.badge-oficina {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+/* ===================================
+   BOTONES DE ACCIÓN
+   =================================== */
+
+.acciones {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-editar,
+.btn-eliminar {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+
+.btn-editar {
+    background: #f59e0b;
+    color: white;
+}
+
+.btn-editar:hover {
+    background: #d97706;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+}
+
+.btn-eliminar {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+/* ===================================
+   SOPORTE Y FOOTER
+   =================================== */
+
+.soporte-info {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    color: #475569;
+    margin-bottom: 20px;
+}
+
+.soporte-info i {
+    color: #10b981;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.soporte-info a {
+    color: #10b981;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.soporte-info a:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    background: rgba(255,255,255,0.9);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+/* ===================================
+   FORMULARIO DE EDICIÓN
+   =================================== */
+
+.form-editar-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@media (max-width: 1400px) {
+    .main-container-dispositivos {
+        grid-template-columns: 400px 1fr;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-container-dispositivos {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-panel {
+        max-height: none;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .header-dispositivos h1 {
+        font-size: 1.8rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .botones-accion-rapida {
+        flex-direction: column;
+    }
+    
+    .filtros-container {
+        flex-direction: column;
+    }
+    
+    .filtro-busqueda {
+        min-width: 100%;
+    }
+    
+    .tabla-container {
+        overflow-x: scroll;
+    }
+    
+    .footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
