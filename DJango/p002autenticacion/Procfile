@@ -1,0 +1,1 @@
+web: gunicorn p002autenticacion.wsgi
